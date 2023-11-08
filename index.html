@@ -3,23 +3,67 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SplitType Resize Example</title>
     <link rel="stylesheet" href="assets/css/style.css" />
-    <title>GitHub pages</title>
   </head>
   <body>
-    <header>
-      <a href="#" class="logo">Logo</a>
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Work</a></li>
-      </ul>
-    </header>
+    <div id="container" style="border: 1px solid #ccc; padding: 20px">
+      <p id="target">
+        This is a text that will be split into lines, words, and characters.
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit ipsam
+        ad in. Atque pariatur error placeat ea nihil ducimus porro enim.
+        Necessitatibus fugit magnam <span class="color">Esteban</span> mollitia
+        sequi, aspernatur facilis blanditiis praesentium. Lorem ipsum dolor sit
+        amet consectetur adipisicing elit. A sed, ad error cupiditate doloribus
+        illo maiores, sunt nobis similique totam tenetur quaerat numquam est
+        corrupti molestias dolores veniam, repudiandae aliquid. Lorem ipsum
+        dolor sit amet, consectetur adipisicing elit. Ut repellendus pariatur,
+        aliquid voluptas reiciendis temporibus maiores. Culpa a, provident omnis
+        ab ducimus aut autem suscipit quia explicabo, dolorum, nulla ratione?
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sint est
+        tempore nulla delectus vel harum deleniti, illum maiores aliquam ducimus
+        eveniet ut sunt? Provident consequuntur esse id assumenda delectus
+        error.
+      </p>
+    </div>
 
-    <section class="">
-      <h1>I'm a Frontend web developer.</h1>
-    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // En este punto, la página y sus elementos se han cargado
+        // Aplica los estilos y realiza cualquier inicialización necesaria aquí
 
-    <script src="assets/js/index.js"></script>
+        // Ejemplo: Aplicar estilos
+        const element = document.querySelector(".color");
+        element.style.color = "red";
+        // Create a SplitType instance for the target element
+        const text = new SplitType("#target");
+  
+        // Create a ResizeObserver to observe changes in the container's size
+        const containerElement = document.getElementById("container");
+        const resizeObserver = new ResizeObserver(
+          _.debounce(([entry]) => {
+            // Check if the width of the container has changed
+            if (entry.contentRect.width !== entry.contentRect.left) {
+              // Split the text again to adjust to the new size
+              text.split();
+            }
+          }, 500)
+        );
+  
+        // Observe changes in the container's size
+        resizeObserver.observe(containerElement);
+      });
+
+      // Animate characters into view with a stagger effect
+      /* gsap.from(text.chars, {
+        opacity: 0,
+        y: 20,
+        duration: 2,
+        stagger: { amount: 0.1 },
+      });*/
+    </script>
   </body>
 </html>
